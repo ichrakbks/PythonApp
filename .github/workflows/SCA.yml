@@ -23,15 +23,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Snyk CLI
-        run: npm install -g snyk
-
-      - name: Authenticate with Snyk
-        run: snyk auth ${{ secrets.OUR_SNYK_KEY }}
-
-      - name: Run Snyk SCA scan
-        run: snyk test 
-        fail_on: never
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.8@master
+        env:
+          SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
+        with:
+          fail_on: never
 
 
       - name: Print JSON analysis report
