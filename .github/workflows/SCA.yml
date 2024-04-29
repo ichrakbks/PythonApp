@@ -18,30 +18,31 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install SCA tool (CRDA)
-        uses: redhat-actions/openshift-tools-installer@v1
-        with:
-          source: github
-          github_pat: ${{ github.token }}
-          crda: "latest"
+      - snyk_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: SCA (CRDA) Scan
-        id: crda_scan
-        uses: redhat-actions/crda@v1.2
-        with:
-          snyk_token: ${{ secrets.OUR_SNYK_KEY}}
-          fail_on: never
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Authenticate with Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk SCA scan
+        run: snyk test
 
       - name: Print JSON analysis report
-        if: ${{ always() && steps.scan.outputs.crda_report_json}}
-        run: cat ${{ steps.scan.outputs.crda_report_json}}
+        if: ${{ always() && steps.scan.outputs.snyk_report_json}}
+        run: cat ${{ steps.scan.outputs.snyk_report_json}}
       
       - name: Print SARIF analysis report
-        if: ${{ always() && steps.scan.outputs.crda_report_sarif}}
-        run: cat ${{ steps.scan.outputs.crda_report_sarif}}
+        if: ${{ always() && steps.scan.outputs.snyk_report_sarif}}
+        run: cat ${{ steps.scan.outputs.snyk_report_sarif}}
 
       - name: Print Report Link
-        run: echo ${{ steps.san.outputs.report_link }}
+        run: echo ${{ steps.scan.outputs.report_link }}
       
       - name: Print Artifact Name
         run: echo ${{ steps.scan.outputs.artifact_name}}
