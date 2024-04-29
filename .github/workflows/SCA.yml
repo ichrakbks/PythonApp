@@ -18,17 +18,11 @@ jobs:
         with:
           python-version: 3.x
 
-      - snyk_scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Install Snyk CLI
         run: npm install -g snyk
 
       - name: Authenticate with Snyk
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth ${{ secrets.OUR_SNYK_KEY }}
 
       - name: Run Snyk SCA scan
         run: snyk test
