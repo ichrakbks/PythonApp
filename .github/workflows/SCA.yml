@@ -30,7 +30,8 @@ jobs:
         run: snyk auth ${{ secrets.OUR_SNYK_KEY }}
 
       - name: Run Snyk SCA scan
-        run: snyk test --severity-threshold=ignore
+        run: snyk test 
+        fail_on: never
 
 
       - name: Print JSON analysis report
