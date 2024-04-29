@@ -6,14 +6,7 @@ on:
 
 jobs:
   sca:
-    strategy: 
-      fail-fast: false
-      matrix:
-        os: ["ubunto-20.04"]
-    runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        shell: bash
+    runs-on: ubuntu-latest
     
     name: SCA python project
     steps:
