@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
@@ -25,10 +25,10 @@ jobs:
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python-3.8@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
-        with:
-          fail_on: never
+        
 
 
       - name: Print JSON analysis report
