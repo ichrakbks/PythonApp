@@ -5,24 +5,22 @@ on:
   workflow_call:
 
 jobs:
-  SAST-Bandit:
-    name: SAST-Bandit 
+  SAST-CodeQL:
+    name: SAST-CodeQL
     runs-on: ubuntu-latest
-
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Security check - Bandit
-        uses: ./
-        with:
-          python_version: 3.8
-          project_path: .
-          ignore_failure: true
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
 
-      - name: Security check report artifacts
-        uses: actions/upload-artifact@v1
-        # if: failure()
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyse@v2
         with:
-          name: Security report
-          path: output/security_report.txt
+          languages: python
