@@ -6,9 +6,9 @@ on:
 
 jobs:
   SAST-Bandit:
+    name: SAST-Bandit 
     runs-on: ubuntu-latest
-    
-    name: SAST-Bandit project
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
