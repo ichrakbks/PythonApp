@@ -1,0 +1,28 @@
+name: SAST 
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  SAST-Bandit:
+    runs-on: ubuntu-latest
+    
+    name: SAST-Bandit project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Security check - Bandit
+      uses: ./
+      with:
+        python_version: 3.8
+        project_path: .
+        ignore_failure: true
+
+      - name: Security check report artifacts
+      uses: actions/upload-artifact@v1
+      # if: failure()
+      with:
+        name: Security report
+        path: output/security_report.txt

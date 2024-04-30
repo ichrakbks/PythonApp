@@ -18,5 +18,11 @@ jobs:
     uses: ./.github/workflows/SCA.yml
     secrets: inherit
 
+  SAST:
+    needs: build
+    name: SAST
+    uses: ./.github/workflows/SAST.yml
+    secrets: inherit
+
  
 
