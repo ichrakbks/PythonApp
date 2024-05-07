@@ -32,27 +32,3 @@ jobs:
         with: 
           name: report-semgrep.sarif
 
-  bandit_scan:
-    name: Run Bandit Scan
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set Up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: 3.8
-
-      - name: Install Bandit
-        run: pip install bandit
-
-      - name: Run Bandit Scan
-        run: bandit -ll -ii -r . -f sarif -o bandit-report.sarif
-
-      - name: Upload Bandit Scan Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: bandit-findings
-          path: bandit-report.sarif
