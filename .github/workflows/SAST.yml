@@ -5,62 +5,54 @@ on:
   workflow_call:
 
 jobs:
-
   semgrep-scan:
-      runs-on: ubuntu-latest
-      container:
-        image: returntocorp/semgrep
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
 
-      steps:
+    steps:
+      - name: Clone application source code
+        uses: actions/checkout@v3
 
-        # step 1
-        - name: clone application source code
-          uses: actions/checkout@v3
+      - name: Full scan
+        run: |
+          semgrep \
+            --sarif --output report-semgrep.sarif \
+            --metrics=off \
+            --config="p/default"
 
-        # step 2
-        - name: full scan
-          run: |
-            semgrep \
-              --sarif --output report-semgrep.sarif \
-              --metrics=off \
-              --config="p/default"
+      - name: Save report as pipeline artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: report-semgrep.sarif
+          path: report-semgrep.sarif
 
-        # step 3
-        
-        - name: save report as pipeline artifact
-          uses: actions/upload-artifact@v3
-          with:
-            name: report-semgrep.sarif
-            path: report-semgrep.sarif
-            
-        # step 4
-        - name: Download report
-          uses: actions/download-artifact@v2
-          with: 
-            name: report-semgrep.sarif
-  
-  Bandit_scan:
-  name: Run Bandit Scan
-  runs-on: ubuntu-latest
+      - name: Download report
+        uses: actions/download-artifact@v2
+        with: 
+          name: report-semgrep.sarif
 
-  steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+  bandit_scan:
+    name: Run Bandit Scan
+    runs-on: ubuntu-latest
 
-    - name: Set Up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: 3.8
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Install Bandit
-      run: pip install bandit
+      - name: Set Up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
 
-    - name: Run Bandit Scan
-      run: bandit -ll -ii -r . -f sarif -o bandit-report.sarif
+      - name: Install Bandit
+        run: pip install bandit
 
-    - name: Upload Bandit Scan Artifact
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: bandit-findings
-        path: bandit-report.sarif
+      - name: Run Bandit Scan
+        run: bandit -ll -ii -r . -f sarif -o bandit-report.sarif
+
+      - name: Upload Bandit Scan Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bandit-findings
+          path: bandit-report.sarif
