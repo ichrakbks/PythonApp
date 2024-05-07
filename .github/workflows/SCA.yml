@@ -40,11 +40,7 @@ jobs:
             name: snyk_report.sarif
             path: snyk_report.sarif
             
-        # step 4
-      - name: Download report
-        uses: actions/download-artifact@v2
-        with: 
-            name: snyk_report.sarif
+
 
 
 

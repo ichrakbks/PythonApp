@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  semgrep-full:
+  semgrep-scan:
       runs-on: ubuntu-latest
       container:
         image: returntocorp/semgrep
@@ -38,3 +38,29 @@ jobs:
           uses: actions/download-artifact@v2
           with: 
             name: report-semgrep.sarif
+  
+  Bandit_scan:
+  name: Run Bandit Scan
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set Up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+
+    - name: Install Bandit
+      run: pip install bandit
+
+    - name: Run Bandit Scan
+      run: bandit -ll -ii -r . -f sarif -o bandit-report.sarif
+
+    - name: Upload Bandit Scan Artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: bandit-findings
+        path: bandit-report.sarif
