@@ -27,21 +27,24 @@ jobs:
         uses: snyk/actions/python-3.8@master
         continue-on-error: true
         env:
-          SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
+           SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
+        with:
+           command: code test --sarif
+           args: --sarif-file-output=snyk_report.sarif
+    
+        # step 3
         
+      - name: save report as pipeline artifact
+        uses: actions/upload-artifact@v3
+        with:
+            name: snyk_report.sarif
+            path: snyk_report.sarif
+            
+        # step 4
+      - name: Download report
+        uses: actions/download-artifact@v2
+        with: 
+            name: snyk_report.sarif
 
 
-      - name: Print JSON analysis report
-        if: ${{ always() && steps.scan.outputs.snyk_report_json}}
-        run: cat ${{ steps.scan.outputs.snyk_report_json}}
-      
-      - name: Print SARIF analysis report
-        if: ${{ always() && steps.scan.outputs.snyk_report_sarif}}
-        run: cat ${{ steps.scan.outputs.snyk_report_sarif}}
-
-      - name: Print Report Link
-        run: echo ${{ steps.scan.outputs.report_link }}
-      
-      - name: Print Artifact Name
-        run: echo ${{ steps.scan.outputs.artifact_name}}
 
