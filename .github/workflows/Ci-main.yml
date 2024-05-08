@@ -32,7 +32,7 @@ jobs:
 
   DAST:
     needs: build
-    name: SAST
+    name: OWASP ZAP Scan
     uses: ./.github/workflows/DAST.yml
     secrets: inherit
 
