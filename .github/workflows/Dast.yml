@@ -1,0 +1,17 @@
+name: OWASP ZAP Scan
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run OWASP ZAP Baseline Scan
+        uses: owasp/zap-actions/baseline@v1
+        with:
+          target: https://cokb9gdxk2.execute-api.us-west-2.amazonaws.com/dev
