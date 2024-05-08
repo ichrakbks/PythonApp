@@ -12,6 +12,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run OWASP ZAP Baseline Scan
-        uses: owasp/zap-actions/baseline@v1
+        uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: https://cokb9gdxk2.execute-api.us-west-2.amazonaws.com/dev
+          target: 'https://cokb9gdxk2.execute-api.us-west-2.amazonaws.com/dev'
