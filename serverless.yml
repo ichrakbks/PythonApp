@@ -20,13 +20,12 @@ provider:
             - s3:*
           Resource: "*"
 
-          
+
 package:
   individually: true
   patterns:
     - app.py
     - requirements.txt
-  exclude:
     - venv/**
     - node_modules/**
 plugins:
