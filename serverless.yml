@@ -12,16 +12,18 @@ provider:
   region: us-west-2
   environment:
     VARIABLE_1: supersecret99
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:*
-      Resource:
-        - "*"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:*
+          Resource: "*"
 
+          
 package:
   individually: true
-  include:
+  patterns:
     - app.py
     - requirements.txt
   exclude:
