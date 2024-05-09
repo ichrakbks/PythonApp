@@ -20,16 +20,20 @@ jobs:
           target: https://4t614okg8f.execute-api.us-west-2.amazonaws.com/dev
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
-          
-      - name: Upload zap report
-        uses: actions/upload-artifact@v3
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
-          name: Dast-report.json
-          path: Dast-report.json
+          name: zap_scan
+          path: artifacts
+          
+      - name: Extract JSON report from artifact
+        run: |
+          unzip -j artifacts/zap_scan.zip "*.json" -d extracted_report
 
       - name: Upload zap report to S3
         run: |
-          aws s3 cp Dast-report.json s3://owaspzapreports/Owasp-zap-report.json
+          aws s3 cp extracted_report/report_json.json s3://owaspzapreports/Owasp-zap-report.json
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
