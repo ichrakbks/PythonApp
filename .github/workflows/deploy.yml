@@ -43,8 +43,3 @@ jobs:
       - name: Deploy the app
         run: sls deploy
 
-      - name: Get application endpoint URL
-        id: get_endpoint
-        run: |
-          endpoint=$(sls deploy | grep -oE 'https://[a-zA-Z0-9.-]+\.execute-api\.us-west-2\.amazonaws\.com/dev')
-          echo "::set-output name=endpoint::$endpoint"
