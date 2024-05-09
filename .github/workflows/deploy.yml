@@ -20,12 +20,12 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region us-west-2
 
-      - name: Install Python 3.8
-        run: sudo apt-get install -y python3.8
+      - name: Install Python 3.10
+        run: sudo apt-get install -y python3
 
       - name: Create and activate virtual environment
         run: |
-          python3.8 -m venv ./venv
+          python3  -m venv ./venv
           source ./venv/bin/activate
 
       - name: Install Serverless Framework
