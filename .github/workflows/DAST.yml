@@ -29,6 +29,7 @@ jobs:
           
       - name: Extract JSON report from artifact
         run: |
+          ls artifacts
           unzip -j artifacts/zap_scan.zip "*.json" -d extracted_report
 
       - name: Upload zap report to S3
