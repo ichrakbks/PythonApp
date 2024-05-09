@@ -7,31 +7,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  Build:
     name: App Build
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
   Secret:
-    name: Secret
+    name: Secretscan
     uses: ./.github/workflows/secrets.yml
     secrets: inherit
 
   SCA:
-    needs: build
+    needs: Build
     name: SCA
     uses: ./.github/workflows/SCA.yml
     secrets: inherit
 
   SAST:
-    needs: build
+    needs: Build
     name: SAST
     uses: ./.github/workflows/SAST.yml
     secrets: inherit
 
   Deploy:
-    needs: build
-    name: Deployapp
+    needs: [Build,SAST,SCA]
+    name: Deployapp_scanzap
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
 
