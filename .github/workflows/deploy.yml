@@ -42,7 +42,7 @@ jobs:
 
       - name: Deploy the app
         id: deploy
-        run: sls deploy --json
+        run: sls deploy 
 
   scan_zap:
     needs: deploy
