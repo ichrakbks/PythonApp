@@ -41,8 +41,16 @@ jobs:
         run: sls plugin install -n serverless-s3-deploy
 
       - name: Deploy the app
-        run: sls deploy
+        id: deploy
+        run: sls deploy --json
 
+  scan_zap:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.10.0
@@ -58,14 +66,21 @@ jobs:
         with:
           name: zap_scan
           path: artifacts
-          
 
       - name: Upload zap report to S3
         run: |
-          aws s3 cp artifacts/report_json.json s3://owaspzapreports/Owasp-zap-report.json --debug
+          aws s3 cp artifacts/report_json.json s3://owaspzapreports/Owasp-zap-report.json 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: stop app
+  stop_app:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Stop app
         run: sls remove
