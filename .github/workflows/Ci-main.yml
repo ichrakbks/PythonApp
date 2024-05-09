@@ -13,7 +13,6 @@ jobs:
     secrets: inherit
 
   Secret:
-    needs: build
     name: Secret
     uses: ./.github/workflows/secrets.yml
     secrets: inherit
@@ -30,8 +29,14 @@ jobs:
     uses: ./.github/workflows/SAST.yml
     secrets: inherit
 
-  DAST:
+  Deploy:
     needs: build
+    name: Deployapp
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+
+  DAST:
+    needs: [build,Deploy]
     name: OWASP ZAP Scan
     uses: ./.github/workflows/DAST.yml
     secrets: inherit
