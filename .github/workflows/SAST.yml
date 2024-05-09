@@ -27,14 +27,9 @@ jobs:
           name: report-semgrep.sarif
           path: report-semgrep.sarif
 
-      - name: Download report
-        uses: actions/download-artifact@v2
-        with: 
-          name: report-semgrep.sarif
-
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: report-semgrep.sarif
-        if: always()
+
 
