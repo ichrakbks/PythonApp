@@ -43,3 +43,29 @@ jobs:
       - name: Deploy the app
         run: sls deploy
 
+
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.10.0
+        with:
+          token: ${{ secrets.TOKEN }}
+          docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
+          target: https://4t614okg8f.execute-api.us-west-2.amazonaws.com/dev
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: zap_scan
+          path: artifacts
+          
+
+      - name: Upload zap report to S3
+        run: |
+          aws s3 cp artifacts/report_json.json s3://owaspzapreports/Owasp-zap-report.json --debug
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: stop app
+        run: sls remove

@@ -35,9 +35,6 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
 
-  DAST:
-    needs: [build,Deploy]
-    name: OWASP ZAP Scan
-    uses: ./.github/workflows/DAST.yml
-    secrets: inherit
+
+
 
