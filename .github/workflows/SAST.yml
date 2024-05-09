@@ -6,6 +6,9 @@ on:
 
 jobs:
   semgrep-scan:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write
     runs-on: ubuntu-latest
     container:
       image: returntocorp/semgrep
