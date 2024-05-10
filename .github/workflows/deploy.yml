@@ -43,9 +43,16 @@ jobs:
       - name: Deploy the app
         id: deploy
         run: |
-
+         
           deployment_output=$(sls deploy)
+         
+          echo "::set-output name=deployment_output::$deployment_output"
 
-          deployed_url=$(echo "$deployment_output" | grep -oP 'https:\/\/[^\s]+' | head -n 1)
-          echo "::set-env name=DEPLOYED_URL::$deployed_url"
+      - name: Extract URL
+        id: extract-url
+        run: |
+
+          deployed_url=$(echo "${{ steps.deploy.outputs.deployment_output }}" | grep -oP 'https:\/\/[^\s]+' | head -n 1)
+          echo "Deployed URL::$deployed_url"
+          echo "::set-output name=deployed_url::$deployed_url"
     
