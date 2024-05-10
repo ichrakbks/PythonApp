@@ -1,11 +1,11 @@
-name: OWASP ZAP Scan
+name: Dast
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  zap_scan:
+  Owasp_zap_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
