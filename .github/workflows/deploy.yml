@@ -42,10 +42,6 @@ jobs:
 
       - name: Deploy the app
         id: deploy
-        run: |
-          deployment_output=$(sls deploy)
-          echo "$deployment_output" > output.json
-          endpoints=$(jq -r '.endpoints | .[]' output.json)
-          cat endpoints
+        run: sls deploy
 
 
