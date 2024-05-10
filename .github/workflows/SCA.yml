@@ -15,8 +15,7 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
+
 
       - name: Install dependencies
         run: |
@@ -29,7 +28,7 @@ jobs:
         env:
            SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
         with:
-           command: test --file=requirements.txt --sarif
+           command: test --all-projects --sarif
            args: --sarif-file-output=snyk_report.sarif
     
         # step 3
