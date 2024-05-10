@@ -26,7 +26,7 @@ jobs:
   SAST:
     needs: Build
     name: SAST
-    uses: ./.github/workflows/SAST.yml
+    uses: ./.github/workflows/semgrep.yml
     secrets: inherit
 
   Deploy:
