@@ -45,6 +45,6 @@ jobs:
         run: sls deploy 
 
       - name: Extract URL
-        run: echo "URL: ${{ steps.deploy.outputs.endpoints | fromJson | keys[0] }}"
+        run: echo "URL:" ${{ steps.deploy.outputs.endpoints | fromJson | keys[0] }} 
      
     
