@@ -43,15 +43,9 @@ jobs:
       - name: Deploy the app
         id: deploy
         run: |
-         
           deployment_output=$(sls deploy)
-         
-          echo "::set-output name=deployment_output::$deployment_output"
+          echo "$deployment_output" > output.json
+          endpoints=$(jq -r '.endpoints | .[]' output.json)
+          cat endpoints
 
-      - name: Extract URL
-        id: extract-url
-        run: |
 
-          deployed_url=$(echo "${{ steps.deploy.outputs.deployment_output }}" | awk '/endpoints:/{p=1} p && /https:\/\/[^[:space:]]+/{print $1; exit}')
-
-    
