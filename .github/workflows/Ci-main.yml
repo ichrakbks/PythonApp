@@ -21,12 +21,14 @@ jobs:
     needs: Build
     name: SCA
     uses: ./.github/workflows/SCA.yml
+    permissions:
+      security-events: write
     secrets: inherit
 
   SAST:
     needs: Build
     name: SAST
-    uses: ./.github/workflows/semgrep.yml
+    uses: ./.github/workflows/SAST.yml
     permissions:
       security-events: write
     secrets: inherit
