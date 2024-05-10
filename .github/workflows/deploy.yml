@@ -52,7 +52,6 @@ jobs:
         id: extract-url
         run: |
 
-          deployed_url=$(echo "${{ steps.deploy.outputs.deployment_output }}" | grep -oP 'https:\/\/[^\s]+' | head -n 1)
-          echo "Deployed URL::$deployed_url"
-          echo "::set-output name=deployed_url::$deployed_url"
+          deployed_url=$(echo "${{ steps.deploy.outputs.deployment_output }}" | awk '/endpoints:/{p=1} p && /https:\/\/[^[:space:]]+/{print $1; exit}')
+
     
