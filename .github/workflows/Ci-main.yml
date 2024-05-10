@@ -34,7 +34,7 @@ jobs:
     secrets: inherit
 
   Deploy:
-    needs: [Build,SAST,SCA]
+    needs: [Build]
     name: Deployapp_scanzap
     uses: ./.github/workflows/deploy.yml
     secrets: inherit

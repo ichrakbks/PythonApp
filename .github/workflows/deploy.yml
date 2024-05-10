@@ -42,14 +42,10 @@ jobs:
 
       - name: Deploy the app
         id: deploy
-        run: sls deploy 
-
-      - name: Extract URL
-        id: extract-url
         run: |
-          # Extract the first URL from the endpoints output
-          FIRST_URL=$(echo "${{ steps.deploy.outputs.endpoints }}" | jq -r '.[0]')
 
-          # Set the extracted URL as an output
-          echo "::set-output name=first_url::$FIRST_URL"
+          deployment_output=$(sls deploy)
+
+          deployed_url=$(echo "$deployment_output" | grep -oP 'https:\/\/[^\s]+' | head -n 1)
+          echo "::set-env name=DEPLOYED_URL::$deployed_url"
     
