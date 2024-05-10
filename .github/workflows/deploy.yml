@@ -45,6 +45,11 @@ jobs:
         run: sls deploy 
 
       - name: Extract URL
-        run: echo "URL:" ${{ steps.deploy.outputs.endpoints | fromJson | keys[0] }} 
-     
+        id: extract-url
+        run: |
+          # Extract the first URL from the endpoints output
+          FIRST_URL=$(echo "${{ steps.deploy.outputs.endpoints }}" | jq -r '.[0]')
+
+          # Set the extracted URL as an output
+          echo "::set-output name=first_url::$FIRST_URL"
     
