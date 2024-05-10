@@ -1,11 +1,11 @@
-name: Deployapp_scanzap
+name: Deployapp
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  appdeploy_scanzap:
+  appdeploy:
     runs-on: ubuntu-latest
 
     steps:
