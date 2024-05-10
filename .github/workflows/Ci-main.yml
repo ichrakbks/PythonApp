@@ -27,6 +27,8 @@ jobs:
     needs: Build
     name: SAST
     uses: ./.github/workflows/semgrep.yml
+    permissions:
+      security-events: write
     secrets: inherit
 
   Deploy:
