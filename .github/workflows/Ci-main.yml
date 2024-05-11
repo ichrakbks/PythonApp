@@ -15,6 +15,7 @@ jobs:
   remove:
     name: removeapp
     uses: ./.github/workflows/remove.yml
+    secrets: inherit
 
 
 
