@@ -1,0 +1,50 @@
+name: Deployapp
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  appdeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region us-west-2
+
+      - name: Install Python 3.10
+        run: sudo apt-get install -y python3
+
+      - name: Create and activate virtual environment
+        run: |
+          python3  -m venv ./venv
+          source ./venv/bin/activate
+
+      - name: Install Serverless Framework
+        run: sudo npm install -g serverless
+
+      - name: Replace bucket name with unique name
+        run: sed -i'' -e "s/myrandombucket/$(uuidgen | tr '[:upper:]' '[:lower:]')/g" serverless.yml
+
+      - name: Install serverless-python-requirements plugin
+        run: sls plugin install -n serverless-python-requirements
+
+      - name: Install serverless-s3-deploy plugin
+        run: sls plugin install -n serverless-s3-deploy
+
+      - name: Deploy the app
+        id: deploy
+        run: sls deploy
+
+      - name: remove app
+        run: sls remove
+
+
