@@ -12,9 +12,37 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  Secret:
+ Secret:
     name: Secretscan
     uses: ./.github/workflows/secrets.yml
+    secrets: inherit
+
+  SCA:
+    needs: Build
+    name: Sca
+    uses: ./.github/workflows/SCA.yml
+    permissions:
+      security-events: write
+    secrets: inherit
+
+  SAST:
+    needs: Build
+    name: Sast
+    uses: ./.github/workflows/SAST.yml
+    permissions:
+      security-events: write
+    secrets: inherit
+
+  Deploy:
+    needs: [Build,SAST,SCA]
+    name: Deployapp
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+
+  DAST:
+    needs: Deploy
+    name: Dast 
+    uses: ./.github/workflows/DAST.yml
     secrets: inherit
 
  
