@@ -1,4 +1,4 @@
-name: Deployapp
+name: removeapp
 
 on:
   workflow_dispatch:

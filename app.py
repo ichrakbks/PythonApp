@@ -9,6 +9,7 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = 'ThisisSuperFlagBySecurityDojo'
+password = cbdjcvHZGC15356
 
 @app.route('/', methods=['GET'])
 def index():
