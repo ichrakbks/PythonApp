@@ -12,7 +12,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  remove app:
+  removeapp:
     name: removeapp
     uses: ./.github/workflows/remove.yml
     secrets: inherit
