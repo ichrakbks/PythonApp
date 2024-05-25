@@ -8,7 +8,7 @@ jobs:
   sca:
     runs-on: ubuntu-latest
     
-    name: snyk-scan
+    name: dependency-check-scan
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,15 +29,15 @@ jobs:
            SNYK_TOKEN: ${{ secrets.OUR_SNYK_KEY }}
         with:
            command: test --all-projects --sarif
-           args: --sarif-file-output=snyk_report.sarif
+           args: --sarif-file-output=dependency-check.sarif
     
         # step 3
         
       - name: save report as pipeline artifact
         uses: actions/upload-artifact@v3
         with:
-            name: snyk_report.sarif
-            path: snyk_report.sarif
+            name: dependency-check_report.sarif
+            path: dependency-check_report.sarif
             
 
 

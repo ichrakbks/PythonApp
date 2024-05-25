@@ -1,7 +1,24 @@
-password=*****
-Api_Token=214651814894
+name: CI
 
- SCA:
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  SecretScan:
+    name: Secretscan
+    uses: ./.github/workflows/secrets.yml
+    secrets: inherit
+
+  Build:
+    name: App Build
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  SCA:
     needs: Build
     name: Sca
     uses: ./.github/workflows/SCA.yml
@@ -29,7 +46,5 @@ Api_Token=214651814894
     uses: ./.github/workflows/DAST.yml
     secrets: inherit
 
+
  
-
-
-
