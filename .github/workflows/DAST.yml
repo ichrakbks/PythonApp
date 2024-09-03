@@ -22,7 +22,7 @@ jobs:
           cmd_options: '-a'
 
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: zap_scan
           path: artifacts
